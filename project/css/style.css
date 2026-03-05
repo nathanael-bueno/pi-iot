@@ -1,0 +1,501 @@
+/* Estilo da página principal */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "DM Sans", sans-serif;
+    background-color: #131515;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+.table-line {
+    width: 100%;
+    border: 1px solid #212121;
+    margin: 0 auto;
+    opacity: 0.6;
+}
+
+
+.line00 {
+    width: 1080px;
+    border: 1px solid #212121;
+    margin: 0 auto;
+    opacity: 0.6;
+}
+hr {
+    width: 920px;
+    border: 1px solid #212121;
+    margin: 0 auto;
+    opacity: 0.6;
+}
+
+.container-flex {
+    display:flex;
+    width: 1080px;
+    margin: 0 auto;
+}
+
+header .container-flex {
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+header nav ul li a {
+    color: #8e9eba;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out
+}
+
+header nav ul li a:hover {
+    color: #bdcfee;
+    transition: all 0.3s ease-in-out;
+}
+
+header span {
+    font-weight: 700;
+    font-size: 25px;
+}
+
+header nav ul {
+    background-color: #1b1c1f;
+    display: flex;
+    list-style: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    gap: 30px;
+}
+
+/* Botão primário */
+.btn-primary {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+}
+
+.btn-primary::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1b1c1f;
+    border-radius: 8px;
+}
+
+.btn-primary::before {
+    content: "";
+    background: linear-gradient(45deg, #F00 0%, #FF7300 50%, #FFFB00 75%, #F00 100%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 600%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+    transition: opacity 0.3s ease-in-out;
+    mix-blend-mode: color-burn;
+    opacity: 0;
+    border-radius: 8px;
+}
+
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.btn-primary:active::after {
+    background-color: transparent;
+}
+
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.btn-primary a {
+    color: white;
+    font-weight: 700;
+}
+/*Fim do botão primário */
+
+.main-alert .container-flex {
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Botão de Alerta */
+.alert {
+    width: 450px;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 18px solid #1B1C1F;
+    background: linear-gradient(160deg, #1B1C1F 8.51%, #353535 91.49%);
+    box-shadow: 0 0 35px 14px #0B0B0B;
+}
+
+/* Aplica essa classe quando gás é detectado */
+.temgas {
+    content: "gaa";
+    background: linear-gradient(160deg, #F00 8.51%, #FF7300 91.49%);
+    box-shadow: 0 0 35px 14px rgb(245, 40, 40);
+    border: 18px solid #F00;
+    transition: all 0.3s ease-in-out;
+}
+/* Aplica a classe acima quando gás é detectado */
+
+.alert span {
+    font-size: 60px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    mix-blend-mode: soft-light;
+}
+/* fim do botão de Alerta */
+
+.table-section .container-flex {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    height: 80vh;
+}
+
+.table-section .container-flex .text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.table-section .container-flex .text h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    color: #7c7c7c;
+}
+
+.table-section .container-flex .text p {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #7c7c7c;
+}
+
+table {
+    width: 80%;
+    background-color: #202020;
+    border: 1px solid #212121;
+}
+
+table tr td {
+    padding: 10px 15px;
+    border: 1px solid #212121;
+    text-align: center;
+    color: #7c7c7c;
+    background-color: #1B1C1F;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* Área de infromações */
+
+.cards-info .container-flex {
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    height: 80vh;
+}
+
+.text-button {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+}
+
+.text-button .text-info {
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.text-button .text-info h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    color: #7c7c7c;
+}
+
+.text-button .text-info p {
+    font-family: 'DM Sans', sans-serif;
+    width: 600px;
+    text-align: start;
+    line-height: 1.2;
+    font-weight: 300;
+    font-size: 20px;
+    color: #7c7c7c;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+/* From Uiverse.io by alexruix */
+.card {
+    --background: linear-gradient(to left, #f7ba2b 0%, #ea5358 100%);
+    width: 150px;
+    height: 150px;
+    padding: 5px;
+    border-radius: 1rem;
+    overflow: visible;
+    background: #f7ba2b;
+    background: var(--background);
+    position: relative;
+    z-index: 1;
+}
+
+.card::after {
+    position: absolute;
+    content: "";
+    top: 5px;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    transform: scale(0.8);
+    filter: blur(25px);
+    background: #f7ba2b;
+    background: var(--background);
+    transition: opacity .5s;
+}
+
+.card-info {
+    --color: #181818;
+    background: var(--color);
+    color: var(--color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    border-radius: .7rem;
+}
+
+.card .title {
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: .1em;
+}
+
+/*Hover*/
+.card:hover::after {
+    opacity: 0;
+}
+
+.card:hover .card-info {
+    color: #f7ba2b;
+    transition: color 1s;
+}
+/* From Uiverse.io by alexruix */
+
+/* Área de infromações */
+
+/* Fim do estilo da página principal */
+
+
+
+/* Estilo do grid-card */
+
+.main-cards .container-flex {
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.main-cards .container-flex .main-contain .title {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 38px;
+    color: #7c7c7c;
+}
+
+.main-cards .container-flex .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.main-cards .container-flex .grid-cards .card-01 {
+    padding: 16px;
+    border: 3px solid #171717;
+}
+
+.main-cards .container-flex .grid-cards .card-01 .circ {
+    font-size: large;
+    font-weight: bold;
+    border: 4px solid #19191d;
+    background: linear-gradient(160deg, #1B1C1F 8.51%, #353535 91.49%);
+}
+
+.card-01 .circ span{
+    mix-blend-mode: soft-light;
+}
+
+.main-cards .container-flex .grid-cards .card-01 .inf {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.main-cards .container-flex .grid-cards .card-01 .inf h2 {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #7c7c7c;
+}
+
+.main-cards .container-flex .grid-cards .card-01 .inf .inf-group {
+    text-align: start;
+    width: 100%;
+}
+
+.main-cards .container-flex .grid-cards .card-01 .inf span, p {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: #7c7c7c;
+}
+
+.main-cards .container-flex .grid-cards .card-01 .inf p {
+    background-color: #181818;
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+/* Estilo do form-box */
+
+.form-box {
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: #0B0B0B;
+    border: 4px solid #252525;
+    border-radius: 16px;
+    padding: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-box .title-form {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #7c7c7c;
+    margin-bottom: 4px;
+}
+
+.form-box .id-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-box .id-input label {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #7c7c7c;
+}
+
+.form-box .id-input input {
+    background-color: #0B0B0B;
+    border: 2px solid #252525;
+    border-radius: 8px;
+    padding: 8px;
+    color: #7c7c7c;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.form-box .loc-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-box .loc-input label {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #7c7c7c;
+}
+
+.form-box .loc-input input {
+    background-color: #0B0B0B;
+    border: 2px solid #252525;
+    border-radius: 8px;
+    padding: 8px;
+    color: #7c7c7c;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.form-box .desc-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-box .desc-input label {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #7c7c7c;
+}
+
+.form-box .desc-input input {
+    background-color: #0B0B0B;
+    border: 2px solid #252525;
+    border-radius: 8px;
+    padding: 8px;
+    color: #7c7c7c;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}

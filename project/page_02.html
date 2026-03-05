@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <!-- fonte usada -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- fonte usada -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>PI 2025.2</title>
+</head>
+<body>
+
+    <header class="z-0">
+        <div class="container-flex">
+            <span>PI 2025.2</span>
+
+            <nav>
+                <ul>
+                    <li><a href="#alerta-gas">Alerta</a></li>
+                    <li><a href="#informacoes">Informações</a></li>
+                    <li><a href="#detecoes">Detecções</a></li>
+                </ul>
+            </nav>
+
+            <a class="btn-primary" href="index.html">
+                <button>Voltar ao Inicio</button>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="main-alert" id="alerta-gas">
+            <div class="container-flex">
+                <div class="alert" id="alerta"></div>
+            </div>
+        </section>
+    </main>
+
+    <hr>
+
+    <section class="table-section" id="detecoes">
+        <div class="container-flex">
+
+            <div class="text">
+                <h2>Últimas Deteções</h2>
+                <p>As deteções mais recentes serão listadas abaixo para facilitar a visualização.</p>
+            </div>
+
+            <table id="tabela">
+                <tr>
+                    <td>Data da Deteção</td>
+                    <td>Horário</td>
+                    <td>Aviso</td>
+                    <td>PPM</td>
+                </tr>
+                <!-- <tr>
+                    <td>03/11/2025</td>
+                    <td>14:32</td>
+                    <td>Gás detectado</td>
+                    <td>1153</td>
+                </tr> -->
+            </table>
+        </div>
+    </section>
+    
+    <script src="js/code.js" type="module"></script>
+
+</body>
+</html>

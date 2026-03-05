@@ -1,0 +1,351 @@
+*--Configuração das bibliotecas--*/
+
+#include <Arduino.h>
+
+#include <WiFi.h>
+
+#include <WebServer.h>
+
+#include <WiFiClientSecure.h>
+
+#include <PubSubClient.h>
+
+#include <ArduinoJson.h>
+
+#include <HTTPUpdateServer.h>
+
+#include <HTTPClient.h>
+
+#include <ESP32Servo.h>
+
+/*--Configuração dos pinos--*/
+
+#define ledWifi 27
+
+#define ledApli 14
+
+#define ledRed 25
+
+#define ledGreen 13
+
+#define sensA 32
+
+#define sensD 23
+
+#define buzzer 26
+
+#define SERVO_PIN 22
+
+/*--Rede da FAP--*/
+
+/*const char* ssid = "ContaFAP";
+
+const char* password = "";*/
+
+/*--Rede dos TESTES--*/
+
+/*const char* ssid = "internet-XXXXXXX";
+
+const char* password = "password1234";*/
+
+/*--Configuração MQTT--*/
+
+const char* mqtt_server = "minhachave.s1.eu.hivemq.cloud";
+
+const char* usuarioMqtt = "gasoso";
+
+const char* mqttSenha = "Senha1234";
+
+const char* topicoGas = "gas/detecao";
+
+const char* topicoStatus = "gas/status";
+
+const char* mqttClientId = "gas-sensor-01";
+
+/*--Objetos globais--*/
+
+WiFiClientSecure wifiClientSecure;
+
+PubSubClient mqtt (wifiClientSecure);
+
+Servo valveServo;
+
+/*--Variáveis--*/
+
+int gasValue = 0;
+
+int valorGas = 0;
+
+int leiturasens = 0;
+
+const int limiarGas = 2500;
+
+bool gasDetectado = false;
+
+unsigned long ultimoEnvio = 0;
+
+const unsigned long intervaloEnvio = 2000; // 2 segundos
+
+/*--Funções WiFi--*/
+
+void conectarWifi() {
+
+Serial.print("Conectando ao WiFi");
+
+WiFi.begin(ssid, password);
+
+unsigned long inicio = millis();
+
+while (WiFi.status() != WL_CONNECTED && millis() - inicio < 10000) {
+
+delay(500);
+
+Serial.print(".");
+
+digitalWrite(ledWifi, !digitalRead(ledWifi));
+
+}
+
+if (WiFi.status() == WL_CONNECTED) {
+
+Serial.println("\nConectado! IP: " + WiFi.localIP().toString());
+
+digitalWrite(ledWifi, HIGH);
+
+} else {
+
+Serial.println("\nFalha na conexão WiFi!");
+
+digitalWrite(ledWifi, LOW);
+
+}
+
+}
+
+/*--Funções MQTT--*/
+
+void conectarMQTT() {
+
+Serial.print("Conectando ao MQTT...");
+
+wifiClientSecure.setInsecure();
+
+mqtt.setServer(mqtt_server, 8883);
+
+unsigned long inicio = millis();
+
+while (!mqtt.connected() && millis() - inicio < 10000) {
+
+if (mqtt.connect(mqttClientId, usuarioMqtt, mqttSenha)) {
+
+Serial.println("Conectado!");
+
+digitalWrite(ledApli, HIGH);
+
+mqtt.publish(topicoStatus, "online", true);
+
+} else {
+
+Serial.print("Falha. Estado: ");
+
+Serial.print(mqtt.state());
+
+Serial.println(" Tentando novamente em 5s...");
+
+digitalWrite(ledApli, LOW);
+
+delay(5000);
+
+}
+
+}
+
+}
+
+void publicarDadosMQTT(bool detecao, int valorGas, int gasValue) {
+
+if (!mqtt.connected()) {
+
+conectarMQTT();
+
+return;
+
+}
+
+StaticJsonDocument<256> doc;
+
+doc["sensor_id"] = mqttClientId;
+
+doc["gas_detectado"] = detecao;
+
+doc["valor_gas"] = valorGas;
+
+doc["valor_analogico"] = gasValue;
+
+doc["valor_digital"] = leiturasens;
+
+doc["limiar"] = limiarGas;
+
+doc["timestamp"] = millis();
+
+doc["status"] = detecao ? "ALERTA" : "NORMAL";
+
+char buffer[256];
+
+serializeJson(doc, buffer);
+
+if (mqtt.publish(topicoGas, buffer, true)) {
+
+Serial.println("Dados publicados no MQTT");
+
+} else {
+
+Serial.println("Erro ao publicar no MQTT");
+
+}
+
+}
+
+/*--Funções do Sistema--*/
+
+void inicializarSistema() {
+
+pinMode(sensA, INPUT);
+
+pinMode(sensD, INPUT);
+
+pinMode(ledRed, OUTPUT);
+
+pinMode(ledGreen, OUTPUT);
+
+pinMode(buzzer, OUTPUT);
+
+pinMode(ledWifi, OUTPUT);
+
+pinMode(ledApli, OUTPUT);
+
+digitalWrite(ledRed, LOW);
+
+digitalWrite(ledGreen, HIGH);
+
+digitalWrite(buzzer, LOW);
+
+digitalWrite(ledWifi, LOW);
+
+digitalWrite(ledApli, LOW);
+
+valveServo.attach(SERVO_PIN);
+
+valveServo.write(0);
+
+Serial.begin(115200);
+
+Serial.println("Sistema de Detecção de Gás Iniciado");
+
+}
+
+void verificarConexoes() {
+
+if (WiFi.status() != WL_CONNECTED) {
+
+Serial.println("WiFi desconectado - reconectando...");
+
+digitalWrite(ledWifi, LOW);
+
+conectarWifi();
+
+}
+
+if (!mqtt.connected()) {
+
+Serial.println("MQTT desconectado - reconectando...");
+
+digitalWrite(ledApli, LOW);
+
+conectarMQTT();
+
+}
+
+}
+
+void processarSensor() {
+
+leiturasens = digitalRead(sensD);
+
+gasValue = analogRead(sensA);
+
+Serial.print("Nível detectado: ");
+
+Serial.print(gasValue);
+
+Serial.print(" || ");
+
+if (gasValue >= 2500) {
+
+Serial.println("GÁS DETECTADO !!!");
+
+digitalWrite(ledGreen, LOW);
+
+digitalWrite(ledRed, HIGH);
+
+valveServo.write(90);
+
+tone(buzzer, 102, 250);
+
+} else {
+
+Serial.println("GÁS AUSENTE !!!");
+
+digitalWrite(ledGreen, HIGH);
+
+digitalWrite(ledRed, LOW);
+
+valveServo.write(-90);
+
+noTone(buzzer);
+
+}
+
+}
+
+void setup() {
+
+inicializarSistema();
+
+conectarWifi();
+
+conectarMQTT();
+
+publicarDadosMQTT(false, 0, 0);
+
+Serial.println("Sistema pronto para operação");
+
+}
+
+void loop() {
+
+verificarConexoes();
+
+processarSensor();
+
+mqtt.loop();
+
+/* --- ENVIO CORRIGIDO E AUTOMÁTICO --- */
+
+bool novaDetecao = (leiturasens == LOW || gasValue > limiarGas) ? true : false;
+
+if (novaDetecao != gasDetectado || millis() - ultimoEnvio > intervaloEnvio) {
+
+gasDetectado = novaDetecao;
+
+valorGas = novaDetecao ? 1 : 0;
+
+ultimoEnvio = millis();
+
+publicarDadosMQTT(gasDetectado, valorGas, gasValue);
+
+}
+
+delay(500);
+
+}

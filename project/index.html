@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+    <!-- fonte usada -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- fonte usada -->
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" defer></script>
+    <title>PI 2025.2</title>
+</head>
+<body>
+
+    
+    <div id="form" class="form-box z-2 hidden flex">
+
+        <div class="flex justify-end w-full items-center">
+            <button class="mb-2 text-gray-500 bg-gray-500/15 p-1 rounded-md" onclick="closeForm()" id="closeForm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="title-form">
+            <h2>Adicione um Dispositivo</h2>
+        </div>
+
+        <div class="id-input">    
+            <label for="" class="ss">ID do dispositivo</label>
+            <input type="text" name="text" id="id-device" placeholder="Insira o ID">
+        </div>
+
+        <div class="loc-input">    
+            <label for="" class="ss">localização do dispositivo</label>
+            <input type="text" name="text" id="loc" placeholder="Insira a localização">
+        </div>
+
+        <button type="button" id="add-device" class="py-3 px-16 bg-blue-50 dark:bg-blue-500/70 text-blue-300 rounded-lg w-full flex items-center justify-center">
+            <span>Adicionar</span>
+        </button>
+
+    </div>
+
+    <div id="overlay" class="z-1 h-[100vh] w-[100vw] bg-black opacity-70 fixed top-0 hidden">
+    </div>
+
+    <header>
+        <div class="container-flex">
+            <span>PI 2025.2</span>
+
+            <nav>
+                <ul>
+                    <li><a href="#alerta-gas">Alerta</a></li>
+                    <li><a href="#informacoes">Informações</a></li>
+                    <li><a href="#detecoes">Detecções</a></li>
+                </ul>
+            </nav>
+
+            <button class="btn-primary">
+                <a href="#">Fale Conosco</a>
+            </button>
+        </div>
+    </header>
+    
+    <main class="main-cards">
+        <section class="container-flex">
+            <div class="main-contain flex flex-col w-full gap-3">
+                <div class="contain flex justify-between items-center w-full">
+                    <h1 class="title">Detecção de Gás</h1>
+
+                    <button id="add" type="button" class="bg-green-500 dark:bg-green-600/70 text-green-300 dark:text-green-200/70 hover:bg-green-600 dark:hover:bg-green-600 transition-colors duration-300 px-[18px] py-[10px] rounded-[6px] text-white flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Adicionar
+                    </button>
+                </div>
+                <hr class="line00">
+            </div>
+
+            <div class="grid-cards" id="list-detecoes">
+
+                <div class="card-01 flex flex-col rounded-[24px] bg-[#1B1C1F] shadow-md items-center w-65">
+                    <div class="circ h-40 w-40 rounded-full flex justify-center items-center text-center text-white">
+                        <span>Nenhum Gás Detectado!</span>
+                    </div>
+
+                    <div class="inf flex flex-col items-center gap-4 w-full">
+                        <h2>Detector 01</h2>
+
+                        <div class="inf-group flex flex-col gap-2">
+                            <span>Identificador:</span>
+                            <p>#0012</p>
+                        </div>
+                        <div class="inf-group flex flex-col gap-2">
+                            <span>Localização:</span>
+                            <p>Casa da Regina</p>
+                        </div>
+                    </div>
+
+                    <div class="btns flex flex-col w-full gap-3">
+                        <button class="p-3 w-full text-blue-500 dark:text-blue-200 bg-blue-700 dark:bg-blue-600/70 rounded-[8px] font-bold hover:bg-blue-600 transition-colors duration-300">
+                            <a href="page_02.html">Saiba mais</a>
+                        </button>
+                        <button class="btn-excluir p-3 w-full text-red-500 dark:text-red-200/70 hover:text-red-200/90 bg-red-700 dark:bg-red-600/10 rounded-[8px] font-bold hover:bg-red-600/30 transition-colors duration-300 flex justify-center items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            <a href="#">Excluir</a>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <hr>
+
+    <section class="cards-info" id="informacoes">
+        <div class="container-flex">
+
+            <div class="text-button">
+                <div class="text-info">
+                    <h2>Porque usar um detector de gás?</h2>
+                    <p>Um detector de gás identifica vazamentos antes que causem explosões ou intoxicações. Ele emite alertas imediatos, garantindo tempo para agir com segurança. Proteja sua vida e seu lar com tecnologia e prevenção.</p>
+                </div>
+                <button class="btn-primary">
+                    <a href="#">Explore os cards</a>
+                </button>
+            </div>
+
+            <div class="cards-grid">
+                <!-- From Uiverse.io by alexruix --> 
+                <div class="card">
+                    <div class="card-info">
+                        <p class="title">Salva Vidas</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-info">
+                        <p class="title">Evita intoxicações</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-info">
+                        <p class="title">Maior Segurança</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-info">
+                        <p class="title">Maior Prevenção</p>
+                    </div>
+                </div>
+                <!-- From Uiverse.io by alexruix --> 
+            </div>
+
+        </div>
+    </section>
+     
+
+    <!-- <input type="number" id="gas" min="0" max="2"> -->
+
+    <script src="js/script.js" type="module"></script>
+    <script src="js/code.js" type="module"></script>
+
+</body>
+</html>
