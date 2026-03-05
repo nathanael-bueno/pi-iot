@@ -2,7 +2,7 @@
 
 Sistema IoT para detecção de vazamento de gás utilizando ESP32, sensores MQ e comunicação MQTT, com monitoramento em dashboard web.
 
-Veja a documentação completa (Aqui!)[https://github.com/nathanael-bueno/pi-iot/blob/main/docs/PI - Entrega 4.pdf]
+Veja a documentação completa [Aqui](https://github.com/nathanael-bueno/pi-iot/blob/main/docs/PI - Entrega 4.pdf)
 
 Projeto Finalizado em 11 de Novembro de 2025
 
